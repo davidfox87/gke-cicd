@@ -38,3 +38,15 @@ jobs:
     - name: Push Docker image
       run: |
         docker push us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:latest
+
+    - name: Deploy with Cloud Deploy
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        project_id: top-chain-475617-p7
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+      run: |
+        gcloud deploy apply --file deploy/pipeline.yaml --region=us-central1
+        gcloud deploy releases create "app-release-${{ github.sha }}" \
+          --delivery-pipeline=helloworld-pipeline \
+          --region=us-central1 \
+          --skaffold-file=deploy/skaffold.yaml
