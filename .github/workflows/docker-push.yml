@@ -33,7 +33,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:latest -f deploy/Dockerfile
+        docker build -t us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:latest -f deploy/Dockerfile .
 
     - name: Push Docker image
       run: |
