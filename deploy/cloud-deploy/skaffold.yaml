@@ -4,3 +4,16 @@ deploy:
   kubectl:
     manifests:
       - ../../k8s/deployment.yaml
+# profiles:
+# - name: dev
+#   activation:
+#     - command: dev
+#   deploy:
+#     kustomize:
+#       paths:
+#       - k8s/dev
+# - name: staging
+#   deploy:
+#     kustomize:
+#       paths:
+#       - k8s/staging
