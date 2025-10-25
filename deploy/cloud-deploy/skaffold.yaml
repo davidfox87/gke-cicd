@@ -16,4 +16,4 @@ profiles:
       paths:
         - ../../k8s/overlays/staging
 deploy:
-  kuebctl: {}
+  kubectl: {}
