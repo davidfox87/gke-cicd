@@ -5,13 +5,13 @@ metadata:
 
 profiles:
 - name: dev
-  deploy:
+  manifests:
     kustomize:
       paths:
         - ../../k8s/overlays/dev
 
 - name: staging
-  deploy:
+  manifests:
     kustomize:
       paths:
         - ../../k8s/overlays/staging
