@@ -49,10 +49,14 @@ jobs:
         docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REPO }}/${{ env.APP }}:${{ github.sha }}"
 
     # 7. Apply Cloud Deploy pipeline & targets
-    - name: Apply Cloud Deploy pipeline & targets
+    - name: Apply Cloud Deploy Delivery Pipeline
       run: |
         gcloud deploy apply --file deploy/cloud-deploy/pipeline.yaml --region=${{ env.REGION }}
+
+    - name: Apply Cloud Deploy Targets
+      run: |
         gcloud deploy apply --file deploy/cloud-deploy/targets.yaml --region=${{ env.REGION }}
+        
     # 8. Create release name for Cloud Deploy
     - name: Create release name
       run: |
