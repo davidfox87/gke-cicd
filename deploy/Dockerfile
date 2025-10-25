@@ -63,7 +63,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server .
 # -----------------------------
 # Runtime stage
 # -----------------------------
-FROM scratch
+FROM alpine:3.22.2
 WORKDIR /app
 
 # Copy the statically built binary from the builder
