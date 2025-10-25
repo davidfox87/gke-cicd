@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: hello-world-demo
-        image: us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:latest
+        image: us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:{{ .IMAGE_TAG }}
         ports:
         - containerPort: 8080
         env:
