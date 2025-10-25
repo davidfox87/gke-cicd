@@ -21,8 +21,8 @@ profiles:
         paths:
           - ../../k8s/overlays/dev
 
-  - name: production
+  - name: staging
     manifests:
       kustomize:
         paths:
-          - ../../k8s/overlays/dev
+          - ../../k8s/overlays/staging
