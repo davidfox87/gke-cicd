@@ -6,9 +6,11 @@ description: helloworld application delivery pipeline
 serialPipeline:
  stages:
  - targetId: dev
-   profiles: []
+   profiles: 
+   - dev
  - targetId: staging
-   profiles: []
+   profiles: 
+   - staging
 #  - targetId: prod
 #    profiles: []
 
