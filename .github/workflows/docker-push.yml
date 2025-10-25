@@ -52,7 +52,7 @@ jobs:
     - name: Apply Cloud Deploy pipeline & targets
       run: |
         gcloud deploy apply --file deploy/cloud-deploy/pipeline.yaml --region=${{ env.REGION }}
-
+        gcloud deploy apply --file deploy/cloud-deploy/targets.yaml --region=${{ env.REGION }}
     # 8. Create release name for Cloud Deploy
     - name: Create release name
       run: |
