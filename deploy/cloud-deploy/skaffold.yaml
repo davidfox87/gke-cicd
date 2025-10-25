@@ -1,14 +1,28 @@
 apiVersion: skaffold/v4beta7
 kind: Config
-profiles:
-- name: dev
-  manifests:
-    kustomize:
-      paths:
-        - ../../k8s/overlays/dev
 
-- name: staging
-  manifests:
-    kustomize:
-      paths:
-        - ../../k8s/overlays/staging
+build:
+  artifacts:
+    - image: your-app-image
+      context: .
+
+manifests:
+  kustomize:
+    paths:
+      - ../../k8s/overlays/dev  # Default overlay
+
+deploy:
+  kubectl: {}
+
+profiles:
+  - name: dev
+    manifests:
+      kustomize:
+        paths:
+          - ../../k8s/overlays/dev
+
+  - name: production
+    manifests:
+      kustomize:
+        paths:
+          - ../../k8s/overlays/dev
