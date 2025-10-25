@@ -14,7 +14,7 @@ metadata:
 description: staging cluster
 requireApproval: true # putting this here because i don't want to create three clusters
 gke:
-  cluster: projects/top-chain-475617-p7/locations/us-central1-a/clusters/staging-cluster
+  cluster: projects/top-chain-475617-p7/locations/us-central1-b/clusters/staging-cluster
 ---
 # apiVersion: deploy.cloud.google.com/v1beta1
 # kind: Target
