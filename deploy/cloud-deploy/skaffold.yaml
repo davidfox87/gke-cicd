@@ -1,19 +1,19 @@
-apiVersion: skaffold/v2beta16
+apiVersion: skaffold/v4beta7
 kind: Config
+metadata:
+  name: go-http-server
+
+profiles:
+- name: dev
+  deploy:
+    kustomize:
+      paths:
+        - ../../k8s/overlays/dev
+
+- name: staging
+  deploy:
+    kustomize:
+      paths:
+        - ../../k8s/overlays/staging
 deploy:
-  kubectl:
-    manifests:
-      - ../../k8s/deployment.yaml
-# profiles:
-# - name: dev
-#   activation:
-#     - command: dev
-#   deploy:
-#     kustomize:
-#       paths:
-#       - k8s/dev
-# - name: staging
-#   deploy:
-#     kustomize:
-#       paths:
-#       - k8s/staging
+  kuebctl: {}
