@@ -1,11 +1,5 @@
 apiVersion: skaffold/v4beta7
 kind: Config
-metadata:
-  name: go-http-server
-build:
-  artifacts:
-  - image: us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server # Match name in deployment yaml
-    context: ../
 profiles:
 - name: dev
   manifests:
@@ -18,5 +12,3 @@ profiles:
     kustomize:
       paths:
         - ../../k8s/overlays/staging
-deploy:
-  kubectl: {}
