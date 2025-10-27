@@ -1,12 +1,7 @@
 apiVersion: skaffold/v4beta7
 kind: Config
 
-build:
-  artifacts:
-    - image: your-app-image
-      context: .
-
-manifests:
+deploy:
   kustomize:
     paths:
       - ../../k8s/overlays/dev  # Default overlay
@@ -16,13 +11,13 @@ deploy:
 
 profiles:
   - name: dev
-    manifests:
+    deploy:
       kustomize:
         paths:
           - ../../k8s/overlays/dev
 
   - name: staging
-    manifests:
+    deploy:
       kustomize:
         paths:
           - ../../k8s/overlays/staging
