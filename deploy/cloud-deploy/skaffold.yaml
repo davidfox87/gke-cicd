@@ -1,10 +1,10 @@
 apiVersion: skaffold/v4beta7
 kind: Config
 
-deploy:
-  kustomize:
-    paths:
-      - ../../k8s/overlays/dev  # Default overlay
+# deploy:
+#   kustomize:
+#     paths:
+#       - ../../k8s/overlays/dev  # Default overlay
 
 deploy:
   kubectl: {}
