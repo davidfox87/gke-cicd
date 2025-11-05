@@ -1,23 +1,21 @@
 apiVersion: skaffold/v4beta7
 kind: Config
 
-# deploy:
-#   kustomize:
-#     paths:
-#       - ../../k8s/overlays/dev  # Default overlay
-
-deploy:
-  kubectl: {}
-
 profiles:
   - name: dev
     deploy:
+      statusCheckDeadlineSeconds: 300
+      tolerateFailuresUntilDeadline: true
+    manifests:
       kustomize:
         paths:
           - ../../k8s/overlays/dev
 
   - name: staging
     deploy:
+      statusCheckDeadlineSeconds: 300
+      tolerateFailuresUntilDeadline: true
+    manifests:
       kustomize:
         paths:
           - ../../k8s/overlays/staging
