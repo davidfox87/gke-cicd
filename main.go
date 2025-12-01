@@ -14,7 +14,7 @@ import (
 
 func releasesHandler(w http.ResponseWriter, r *http.Request) {
 	const bucket = "cloud-deploy-releases"
-	const object = "releases.json"
+	const object = "release.json"
 
 	ctx, cancel := context.WithTimeout(r.Context(), 15*time.Second)
 	defer cancel()
