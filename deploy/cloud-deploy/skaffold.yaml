@@ -8,10 +8,10 @@ profiles:
         paths:
           - k8s/overlays/dev
 
-  - name: staging
-    manifests:
-      kustomize:
-        paths:
-          - k8s/overlays/staging
+  # - name: staging
+  #   manifests:
+  #     kustomize:
+  #       paths:
+  #         - k8s/overlays/staging
 deploy:
   kubectl: {}
