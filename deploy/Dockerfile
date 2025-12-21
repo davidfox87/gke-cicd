@@ -11,7 +11,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy the rest of the source code
-COPY *.go ./
+COPY . .
 
 # Build fully static binary
 # - CGO_ENABLED=0 ensures no dynamic linking
@@ -35,4 +35,3 @@ USER nonroot:nonroot
 
 # Start the server
 CMD ["./server"]
-    

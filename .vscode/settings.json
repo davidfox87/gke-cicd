@@ -1,0 +1,23 @@
+{
+    "editor.formatOnSave": true,
+    "[go]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.insertSpaces": false,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "gopls": {
+        "gofumpt": false
+    },
+    "go.testFlags": [
+        "-v",
+        "-race",
+        "-coverprofile=coverage.out",
+        "./..."
+    ],
+    "go.testEnvVars": {
+        "CGO_ENABLED": 1
+    }
+}

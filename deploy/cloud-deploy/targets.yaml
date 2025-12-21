@@ -5,4 +5,4 @@ metadata:
   name: dev
 description: dev cluster
 gke:
-  cluster: projects/top-chain-475617-p7/locations/us-central1/clusters/dev-cluster
+  cluster: projects/top-chain-475617-p7/locations/us-central1/clusters/dev
