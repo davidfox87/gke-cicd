@@ -50,7 +50,10 @@ RUN go mod download
 COPY . .
 
 # Install Delve (static binary for distroless compatibility)
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
+# Install Delve as static binary (critical for distroless compatibility)
+RUN CGO_ENABLED=0 GOBIN=/go/bin go install github.com/go-delve/delve/cmd/dlv@latest && \
+    ls -l /go/bin/dlv 
+
 
 # Build binary with debug flags (no optimizations, keep symbols)
 RUN GOOS=linux go build -gcflags "all=-N -l" -o /server
