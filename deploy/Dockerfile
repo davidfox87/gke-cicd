@@ -68,4 +68,4 @@ EXPOSE 8080 2345
 # --listen=:2345 binds immediately
 # --log for startup debug (remove later)
 # --accept-multiclient not needed since dap mode is single-client by default, but add if you want
-ENTRYPOINT ["/dlv", "serve", "--headless", "--listen=:2345", "--api-version=2", "--accept-multiclient", "--log"]
+ENTRYPOINT ["/dlv", "dap", "--listen=:2345", "--log"]

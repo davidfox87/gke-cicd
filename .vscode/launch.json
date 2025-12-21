@@ -2,25 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch in GKE Pod (Delve DAP)",
+      "name": "Attach to Kubernetes",
       "type": "go",
-      "request": "launch", // Key change: launch instead of attach
+      "request": "attach",
       "mode": "remote",
-      "host": "127.0.0.1", // Use 127.0.0.1 for reliability
-      "port": 2345,
-      "debugAdapter": "dlv-dap", // Explicitly use native DAP
-      "apiVersion": 2,
-      "program": "/server", // Path to binary in container
-      "showLog": true,
-      "logOutput": "rpc",
-      "trace": "verbose",
-      "substitutePath": [
-        {
-          "from": "${workspaceFolder}",
-          "to": "/app"
-        }
-      ],
-      "stopOnEntry": true // Pause at start; continue to run app
+      "host": "127.0.0.1",
+      "port": 2345
     }
   ]
 }
