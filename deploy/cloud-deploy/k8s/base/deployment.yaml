@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gcs-proxy                 # ← better name than hello-world-demo
-  namespace: grafana              # ← forces deployment into grafana namespace
+  name: my-server                 # ← better name than hello-world-demo
+  namespace: team-1              # ← forces deployment into team-1 namespace
   labels:
-    app: gcs-proxy
+    app: my-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gcs-proxy
+      app: my-server
   template:
     metadata:
       labels:
-        app: gcs-proxy
+        app: my-server
     spec:
-      serviceAccountName: grafana           # ← uses the same SA your Grafana pods use
+      serviceAccountName: sa           # ← uses the same SA your Grafana pods use
       containers:
-      - name: gcs-proxy
+      - name: my-server
         image: us-central1-docker.pkg.dev/top-chain-475617-p7/test-repo/go-http-server:latest
         ports:
         - containerPort: 8080
@@ -36,15 +36,16 @@ spec:
               key: ENV
 ---
 apiVersion: v1
+
 kind: Service
 metadata:
-  name: gcs-proxy
-  namespace: grafana
+  name: my-server
+  namespace: team-1
 spec:
   type: ClusterIP
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: gcs-proxy
+    app: my-server
 
