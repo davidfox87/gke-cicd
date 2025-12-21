@@ -37,10 +37,12 @@
 # CMD ["./server"]
 
 
+
+
 # -----------------------------
-# Build stage (multi-stage)
+# Build stage
 # -----------------------------
-FROM golang:1.25 AS builder 
+FROM golang:1.25 AS builder
 WORKDIR /app
 
 # Copy go.mod/go.sum first for caching
@@ -59,7 +61,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -gcflags "all=-N -l" -o /server
 # -----------------------------
 # Runtime stage (distroless)
 # -----------------------------
-FROM gcr.io/distroless/base-debian12  # Or debian11 if preferred
+# Use base-debian12 (or debian11 if preferred)
+FROM gcr.io/distroless/base-debian12
 
 WORKDIR /
 COPY --from=builder /server /server
