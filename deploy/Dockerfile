@@ -55,13 +55,14 @@ RUN CGO_ENABLED=0 GOOS=linux go build -gcflags "all=-N -l" -o /server
 # -----------------------------
 # Runtime stage (distroless)
 # -----------------------------
-FROM gcr.io/distroless/base-debian12
+FROM scratch
 
-WORKDIR /
+# No WORKDIR needed, but can add for clarity
 COPY --from=builder /server /server
 COPY --from=builder /go/bin/dlv /dlv
 
+# No EXPOSE needed for port-forward, but good for docs
 EXPOSE 8080 2345
 
+# ENTRYPOINT with --continue to bind port immediately
 ENTRYPOINT ["/dlv", "exec", "/server", "--headless", "--listen=:2345", "--api-version=2", "--accept-multiclient", "--continue"]
-
