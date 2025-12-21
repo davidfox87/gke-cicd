@@ -63,5 +63,5 @@ COPY --from=builder /go/bin/dlv /dlv
 
 EXPOSE 8080 2345
 
-ENTRYPOINT ["/dlv", "exec", "/server", "--listen=:2345", "--headless=true", "--api-version=2", "--accept-multiclient", "--continue", "--"]
+ENTRYPOINT ["/dlv", "exec", "/server", "--headless", "--listen=:2345", "--api-version=2", "--accept-multiclient"]
 
