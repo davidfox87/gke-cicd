@@ -1,68 +1,81 @@
+// Package main implements a simple HTTP server.
 package main
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
 	"time"
 
-	"cloud.google.com/go/storage"
+	"github.com/BadrChoubai/hello-api/internal/handler"
+	"github.com/BadrChoubai/hello-api/internal/observability/logging"
+	"github.com/BadrChoubai/hello-api/internal/observability/telemetry"
 )
 
-func releasesHandler(w http.ResponseWriter, r *http.Request) {
-	const bucket = "cloud-deploy-releases"
-	const object = "release.json"
+func run(ctx context.Context, stdout io.Writer) error {
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
-	ctx, cancel := context.WithTimeout(r.Context(), 15*time.Second)
+	logger := logging.NewStdLogger(stdout)
+
+	otelShutdown, err := telemetry.SetupOTelSDK(ctx)
+	if err != nil {
+		logger.Error("initializing OpenTelemetry", "error", err)
+		return err
+	}
+	defer func() {
+		err = errors.Join(err, otelShutdown(ctx))
+	}()
+
+	server := &http.Server{
+		Addr:         ":" + strconv.Itoa(8080),
+		BaseContext:  func(_ net.Listener) context.Context { return ctx },
+		ReadTimeout:  time.Second,
+		WriteTimeout: 10 * time.Second,
+		Handler:      handler.NewHandler(logger),
+	}
+
+	srvErr := make(chan error, 1)
+	go func() {
+		logger.Info("server started", "addr", server.Addr)
+		srvErr <- server.ListenAndServe()
+	}()
+
+	select {
+	case err = <-srvErr:
+		if !errors.Is(err, http.ErrServerClosed) {
+			logger.Error("HTTP server error", "error", err)
+			return err
+		}
+		logger.Info("server closed")
+	case <-ctx.Done():
+		logger.Warn("shutdown signal received")
+		stop()
+	}
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		http.Error(w, "Failed to create GCS client", http.StatusInternalServerError)
-		log.Printf("storage.NewClient: %v", err)
-		return
+	if shutdownErr := server.Shutdown(shutdownCtx); shutdownErr != nil {
+		logger.Error("server shutdown failed", "error", shutdownErr)
+		return shutdownErr
 	}
-	defer client.Close()
 
-	rc, err := client.Bucket(bucket).Object(object).NewReader(ctx)
-	if err != nil {
-		if err == storage.ErrObjectNotExist {
-			http.Error(w, "releases.json not found in bucket", http.StatusNotFound)
-		} else {
-			http.Error(w, "Failed to read object", http.StatusInternalServerError)
-		}
-		log.Printf("Object(%q).NewReader: %v", object, err)
-		return
-	}
-	defer rc.Close()
-
-	// Set proper headers for Grafana
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("X-Content-Type-Options", "nosniff")
-
-	// Stream directly from GCS → HTTP response (zero memory copy for large files)
-	if _, err := io.Copy(w, rc); err != nil {
-		// Client probably disconnected — log but don't send error body
-		log.Printf("Error streaming to client: %v", err)
-		return
-	}
+	logger.Info("server shutdown complete")
+	return nil
 }
 
 func main() {
-	http.HandleFunc("/releases.json", releasesHandler)
-	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(200) })
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Grafana GCS proxy — /releases.json")
-	})
+	ctx := context.Background()
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	if err := run(ctx, os.Stdout); err != nil {
+		log.Fatalln(err)
 	}
-	log.Printf("Listening on :%s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
