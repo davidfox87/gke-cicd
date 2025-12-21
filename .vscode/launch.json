@@ -6,7 +6,7 @@
       "type": "go",
       "request": "attach",
       "mode": "remote",
-      "host": "localhost", // Use this over "localhost" for reliability
+      "host": "127.0.0.1", // Use this over "localhost" for reliability
       "port": 2345, // Changed to match your port-forward
       "debugAdapter": "dlv-dap",
       "apiVersion": 2,

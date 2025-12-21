@@ -65,4 +65,4 @@ COPY --from=builder /go/bin/dlv /dlv
 EXPOSE 8080 2345
 
 # ENTRYPOINT with --continue to bind port immediately
-ENTRYPOINT ["/dlv", "exec", "/server", "--headless", "--listen=:2345", "--api-version=2", "--accept-multiclient", "--continue"]
+ENTRYPOINT ["/dlv", "exec", "--headless", "--continue","--listen :2345", "--accept-multiclient", "/server"]
