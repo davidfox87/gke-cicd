@@ -36,9 +36,6 @@
 # # Start the server
 # CMD ["./server"]
 
-
-
-
 # -----------------------------
 # Build stage
 # -----------------------------
@@ -53,10 +50,10 @@ RUN go mod download
 COPY . .
 
 # Install Delve (static binary for distroless compatibility)
-RUN CGO_ENABLED=0 go install github.com/go-delve/delve/cmd/dlv@latest
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 # Build binary with debug flags (no optimizations, keep symbols)
-RUN CGO_ENABLED=0 GOOS=linux go build -gcflags "all=-N -l" -o /server
+RUN GOOS=linux go build -gcflags "all=-N -l" -o /server
 
 # -----------------------------
 # Runtime stage (distroless)
