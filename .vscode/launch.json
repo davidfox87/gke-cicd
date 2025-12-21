@@ -2,13 +2,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach remote",
+      "name": "Attach to GKE Pod (Delve)",
       "type": "go",
       "request": "attach",
       "mode": "remote",
+      "host": "localhost",
       "port": 2345,
-      "host": "127.0.0.1",
-      "apiVersion": 1
+      "apiVersion": 2,
+      "showLog": true,
+      "logOutput": "rpc",
+      "trace": "verbose",
+      "substitutePath": [
+        {
+          "from": "${workspaceFolder}",
+          "to": "/app"
+        }
+      ]
     }
   ]
 }
