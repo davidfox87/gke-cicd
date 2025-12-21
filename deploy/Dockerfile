@@ -36,8 +36,6 @@
 # # Start the server
 # CMD ["./server"]
 
-
-
 # -----------------------------
 # Build stage
 # -----------------------------
@@ -51,11 +49,11 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Install Delve as static binary (critical for distroless compatibility)
-RUN CGO_ENABLED=0 go install github.com/go-delve/delve/cmd/dlv@latest
+# Install Delve (static binary for distroless compatibility)
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 # Build binary with debug flags (no optimizations, keep symbols)
-RUN CGO_ENABLED=0 GOOS=linux go build -gcflags "all=-N -l" -o /server
+RUN GOOS=linux go build -gcflags "all=-N -l" -o /server
 
 # -----------------------------
 # Runtime stage (distroless)
@@ -65,7 +63,7 @@ FROM gcr.io/distroless/base-debian12
 
 WORKDIR /
 COPY --from=builder /server /server
-COPY --from=builder /go/bin/dlv /dlv  # Now dlv will be here
+COPY --from=builder /go/bin/dlv /dlv  # Copy static dlv binary
 
 # Expose app port and debug port
 EXPOSE 8080 40000
