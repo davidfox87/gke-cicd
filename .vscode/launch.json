@@ -2,23 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to GKE Pod (Delve)",
+      "name": "Attach remote",
       "type": "go",
       "request": "attach",
       "mode": "remote",
-      "host": "127.0.0.1", // Use this over "localhost" for reliability
-      "port": 2345, // Changed to match your port-forward
-      "debugAdapter": "dlv-dap",
-      "apiVersion": 2,
-      "showLog": true,
-      "logOutput": "rpc",
-      "trace": "verbose",
-      "substitutePath": [
-        {
-          "from": "${workspaceFolder}",
-          "to": "/app" // Confirm this matches your container's WORKDIR/code path
-        }
-      ]
+      "port": 2345,
+      "host": "127.0.0.1",
+      "apiVersion": 1
     }
   ]
 }

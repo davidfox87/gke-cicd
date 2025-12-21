@@ -64,5 +64,8 @@ COPY --from=builder /go/bin/dlv /dlv
 # No EXPOSE needed for port-forward, but good for docs
 EXPOSE 8080 2345
 
-# ENTRYPOINT with --continue to bind port immediately
-ENTRYPOINT ["/dlv", "exec", "--headless", "--continue","--listen :2345", "--accept-multiclient", "/server"]
+# Start Delve as DAP server
+# --listen=:2345 binds immediately
+# --log for startup debug (remove later)
+# --accept-multiclient not needed since dap mode is single-client by default, but add if you want
+ENTRYPOINT ["/dlv", "dap", "--listen=:2345", "--log"]
