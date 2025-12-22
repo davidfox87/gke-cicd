@@ -19,5 +19,9 @@
     ],
     "go.testEnvVars": {
         "CGO_ENABLED": 1
+    },
+    "go.useLanguageServer": true,
+    "go.delveConfig": {
+        "debugAdapter": "dlv-dap"
     }
 }
