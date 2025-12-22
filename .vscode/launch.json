@@ -2,20 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to Process",
+      "name": "Debug Kubernetes (DAP)",
       "type": "go",
-      "request": "attach",
-      "mode": "local",
-      "processId": 0
-    },
-    {
-      "name": "Attach to Kubernetes (DAP)",
-      "type": "go",
-      "request": "attach",
-      "mode": "remote",
+      "request": "launch",
+      "mode": "exec",
+      "program": "/server",
       "host": "127.0.0.1",
       "port": 2345,
-      "debugAdapter": "dlv-dap"
+      "debugAdapter": "dlv-dap",
+      "substitutePath": [
+        {
+          "from": "${workspaceFolder}",
+          "to": "/app"
+        }
+      ]
     }
   ]
 }
