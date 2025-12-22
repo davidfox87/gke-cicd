@@ -38,7 +38,7 @@
 # -----------------------------
 # Build stage
 # -----------------------------
-FROM golang:1.25 AS builder
+FROM golang:1.23 AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -47,10 +47,11 @@ RUN go mod download
 COPY . .
 
 # Install Delve statically and verify
-RUN CGO_ENABLED=0 GOBIN=/go/bin go install github.com/go-delve/delve/cmd/dlv@v1.23.0 && \
-    ls -l /go/bin/dlv
+RUN CGO_ENABLED=0 GOBIN=/go/bin go install github.com/go-delve/delve/cmd/dlv@latest
 
-RUN CGO_ENABLED=0 GOOS=linux go build -gcflags "all=-N -l" -o /server
+
+RUN CGO_ENABLED=0 GOOS=linux go build -gcflags=all="-N -l" -o /server
+
 
 # -----------------------------
 # Runtime stage (distroless)
